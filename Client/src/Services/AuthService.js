@@ -52,6 +52,37 @@ class AuthService {
             return response;
         }
     }
+
+    async sendOTP(data) {
+        try {
+            return await axios.post('/auth/sendOTP', data, {
+                withCredentials: true,
+            });
+        } catch (error) {
+            return error
+        }
+    }
+
+    async verifyOTP(data) {
+        try {
+            console.log("Verify Data : ", data)
+            return await axios.post('/auth/verifyOTP', data, {
+                withCredentials : true
+            })
+        } catch (error) {
+            return error
+        }
+    }
+
+    async resetPassword(data) {
+        try {
+            return await axios.post('/auth/resetPassword', data, {
+                withCredentials : true,
+            })
+        } catch (error) {
+            return error
+        }
+    }
 }
 
 const authService = new AuthService();

@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 
 export default function Footer() {
   return (
-    <div className='bg-[rgb(14,102,85)] text-white p-4 font-serif tracking-wide dark:bg-[rgb(46,64,83)]'>
+    <div className='bg-[rgb(14,102,85)] text-white p-4 font-serif tracking-wide dark:bg-[rgb(33,47,61)]'>
       <div className='flex flex-col items-center gap-3 flex-wrap'>
         <div className='text-center flex flex-col gap-2 flex-wrap'>
           <h1 className='font-bold tracking-wider xs:text-2xl md:text-3xl'>Movie Website</h1>

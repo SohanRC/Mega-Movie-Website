@@ -5,7 +5,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.ql-editor {
+/* .ql-editor {
     @apply text-xl sm:text-2xl 
 }
 .mce-content-body {
@@ -32,4 +32,13 @@ th, td{
 
 .post-description a {
     @apply dark:text-teal-400 text-blue-400 underline
+} */
+
+/* .authBack {
+    position: relative;
 }
+.authBack img{
+    position: absolute;
+    z-index: -1;
+    filter: brightness(60%);
+} */

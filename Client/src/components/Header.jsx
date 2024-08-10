@@ -14,14 +14,14 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import { setTheme } from "../store/ThemeSlice"
+import { login, logout } from "../store/UserSlice"
 
 const drawerWidth = 240;
-// const navItems = ['Home', 'About', 'Contact'];
 
 
 function Header(props) {
@@ -31,6 +31,7 @@ function Header(props) {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const theme = useSelector((state) => state.theme.theme);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const navItems = [
     {
@@ -58,6 +59,11 @@ function Header(props) {
     dispatch(setTheme());
   }
 
+  const handleSignOut = () => {
+    dispatch(logout());
+    navigate('/signin');
+  }
+
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
@@ -67,8 +73,8 @@ function Header(props) {
       <List>
         {navItems.map((item) =>
           (item.authStatus === null || item.authStatus) ? (
-            <Link to={item.url} >
-              <ListItem key={item.url} disablePadding>
+            <Link to={item.url} key={item.url} >
+              <ListItem disablePadding>
                 <ListItemButton sx={{ textAlign: 'center' }} >
                   <ListItemText primary={item.text} />
 
@@ -85,7 +91,7 @@ function Header(props) {
   return (
     <Box sx={{ display: 'flex', position: 'sticky' }}>
       <CssBaseline />
-      <AppBar component="nav" sx={{ bgcolor: "rgb(14,102,85)", flexWrap: "wrap" }} position='sticky' className='dark:bg-[rgb(46,64,83)]'>
+      <AppBar component="nav" sx={{ bgcolor: "rgb(14,102,85)", flexWrap: "wrap" }} position='fixed' className='dark:bg-[rgb(33,47,61)] relative'>
         <Toolbar>
           <Typography
             variant="h6"
@@ -96,8 +102,8 @@ function Header(props) {
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (item.authStatus === null || item.authStatus) ? (
-              <Link to={item.url}>
-                <Button key={item.url} sx={{ color: '#fff' }}>
+              <Link to={item.url} key={item.url}>
+                <Button sx={{ color: '#fff' }}>
                   {item.text}
                 </Button>
               </Link>
@@ -112,6 +118,17 @@ function Header(props) {
           >
             <MenuIcon />
           </IconButton>
+
+          {isAuthenticated &&
+            <Button
+              variant='contained'
+              className='bg-red-500 py-1 px-2'
+              onClick={handleSignOut}
+            >
+              Sign-Out
+            </Button>
+          }
+
 
           <IconButton
             color="inherit"
