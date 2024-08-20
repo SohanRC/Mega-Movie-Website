@@ -40,6 +40,11 @@ function Header(props) {
       authStatus: null, // null for showing this tab irrespective of user login
     },
     {
+      text: "Dashboard",
+      url: "/Dashboard",
+      authStatus: null, // null for showing this tab irrespective of user login
+    },
+    {
       text: "SignIn",
       url: "/signin",
       authStatus: !isAuthenticated, // show when user is not logged in
@@ -49,6 +54,7 @@ function Header(props) {
       url: "/signup",
       authStatus: !isAuthenticated,
     },
+  
   ];
 
   const handleDrawerToggle = () => {
