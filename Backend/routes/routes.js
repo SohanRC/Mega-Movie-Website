@@ -1,3 +1,4 @@
 import AuthRoutes from "./AuthRoutes.js"
+import MovieRoutes from "./MovieRoutes.js"
 
-export {AuthRoutes}
+export {AuthRoutes, MovieRoutes}
