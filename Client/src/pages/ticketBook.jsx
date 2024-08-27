@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { FaChair } from 'react-icons/fa';
 import 'tailwindcss/tailwind.css';
+import StripeCheckout from 'react-stripe-checkout';
+// import { toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
 const TicketBooking = () => {
   const [rows, setRows] = useState(6); // Set initial rows
@@ -26,9 +29,39 @@ const TicketBooking = () => {
     );
   };
 
-  const handlePayment = () => {
-    console.log("Selected Seats:", selectedSeats);
-    // Handle payment logic
+  const handlePayment = async (token) => {
+    try {
+      const response = await fetch('http://localhost:3000/api/book', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+
+        },
+        credentials: "include",
+        withCredentials: true,
+        body: JSON.stringify({
+          theaterId: 'theaterId', // Replace with actual theater ID
+          movieId: 'movieId', // Replace with actual movie ID
+          date: '2024-08-26',
+          time: '10:00 AM',
+          seats: selectedSeats,
+          userId: 'userId', // Replace with actual user ID
+          token: token.id,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.ok) {
+        console.log(result);
+        // toast.success(result.message);
+      } else {
+        // toast.error(result.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    //   toast.error("Payment failed");
+    }
   };
 
   return (
@@ -80,12 +113,19 @@ const TicketBooking = () => {
         </div>
       </div>
 
-      <button
-        onClick={handlePayment}
-        className="mt-4 bg-gradient-to-r from-[#3B1578] to-[#B6116B] text-white text-xl font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-gradient-to-l transition-all duration-500"
+      <StripeCheckout
+        stripeKey={import.meta.env.VITE_STRIPE_SECRET_KEY} 
+        token={handlePayment}
+        name='Complete Your Payment'
+        description='Payment for selected movie tickets'
+        amount={selectedSeats.length * 10000} // Replace with actual price calculation
+        billingAddress
+        currency="INR"
       >
-        Pay
-      </button>
+        <button className='mt-4 bg-gradient-to-r from-[#3B1578] to-[#B6116B] text-white text-xl font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-gradient-to-l transition-all duration-500'>
+          Pay
+        </button>
+      </StripeCheckout>
     </div>
   );
 };
