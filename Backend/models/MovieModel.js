@@ -31,18 +31,17 @@ const movieSchema = new Schema(
       type: String, //cloudinary url
       required: true,
     },
-    clipsImage: [
-      //clips required if movie is released
-      {
-        type: String, //cloudinary url
-      },
-    ],
+    // clipsImage: [
+    //   //clips required if movie is released
+    //   {
+    //     type: String, //cloudinary url
+    //   },
+    // ],
     duration: {
       type: String,
     },
     releaseDate: {
       type: String,
-      required: true,
     },
     trending: {
       type: Boolean,
@@ -51,7 +50,6 @@ const movieSchema = new Schema(
     },
     rating: {
       type: String,
-      required: true,
     },
     casts: [
       {
