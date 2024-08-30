@@ -1,12 +1,14 @@
 import React from 'react'
 import Sidebar from './Sidebar'
-import Movies from "./Dashboard"
-const Layout = () => {
+import ShowTime from "./Showtime-component"
+
+const ShowTimes = () => {
   return (
     <div className='flex flex-row h-screen w-screen' >
-      <Sidebar />  <Movies/> 
+      <Sidebar /> <ShowTime/>
+
     </div>
   )
 }
 
-export default Layout
+export default ShowTimes
