@@ -1,14 +1,12 @@
 import React from 'react'
 import Sidebar from './Sidebar'
-import Theaters from "./Theaters-component"
-
-const Theater = () => {
+import Movies from "./Movies-Component"
+const Layout = () => {
   return (
     <div className='flex flex-row h-screen w-screen' >
-      <Sidebar /> <Theaters/>
-
+      <Sidebar />  <Movies/> 
     </div>
   )
 }
 
-export default Theater
+export default Layout

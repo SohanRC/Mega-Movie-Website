@@ -52,7 +52,7 @@ const Sidebar = () => {
     
 
         <div className={`bg-[rgb(14,102,85)] flex flex-col text-white ${open ? "w-60" : "w-0" } ${open ? "p-3" : "p-0" } duration-300 relative `} >
-          <BsArrowRightCircle className={`text-2xl text-indigo-950 bg-indigo-50 rounded-full absolute -right-3 top-9 cursor-pointer ${open && "rotate-180"} `} onClick={() => setOpen(!open)} />
+          <BsArrowRightCircle className={`text-2xl text-green-950 bg-indigo-50 rounded-full absolute -right-3 top-9 cursor-pointer ${open && "rotate-180"} `} onClick={() => setOpen(!open)} />
 
           <Link to='/' className={`flex items-center gap-2 px-1 py-3 hover:no-underline duration-300 ${!open && "scale-0"}`} >
             <RiSettingsLine fontSize={24} className='text-white' />
