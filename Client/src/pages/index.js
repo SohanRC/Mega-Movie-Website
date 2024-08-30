@@ -17,7 +17,6 @@ export {
   SignInPage,
   SignUpPage,
   PasswordResetPage,
-  Movies,
   Theaters,
   AllMovies,
   Movie,
