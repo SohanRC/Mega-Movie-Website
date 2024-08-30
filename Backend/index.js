@@ -6,6 +6,10 @@ import { dbConnect } from "./config/dbConnect.js";
 import { AuthRoutes, MovieRoutes } from "./routes/routes.js";
 import { v2 as cloudinary } from "cloudinary";
 import cookieParser from "cookie-parser";
+<<<<<<< HEAD
+=======
+import  bookingRoutes from './routes/bookingRoutes.js';
+>>>>>>> f28948b0849b400a9b61b7d67a2f90404e58ea21
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,8 +29,16 @@ app.use(cookieParser());
 // ---------------------------------------------------
 
 // routers
+<<<<<<< HEAD
 app.use("/api/auth", AuthRoutes);
 app.use("/api/movies", MovieRoutes);
+=======
+
+app.use('/api/auth', AuthRoutes);
+app.use('/api/movies', MovieRoutes);
+app.use('/api/book', bookingRoutes);
+
+>>>>>>> f28948b0849b400a9b61b7d67a2f90404e58ea21
 
 // start server
 dbConnect().then(() => {
