@@ -20,7 +20,7 @@ export const DASHBOARD_SIDEBAR_LINKS = [
 	{
 		key: 'Showtimes',
 		label: 'Showtimes',
-		path: '/customers',
+		path: '/showTime',
         icon:<SiShowtime />
 	},
 	{
