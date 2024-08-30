@@ -6,18 +6,20 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import { Provider } from "react-redux"
 import { store, persistor } from './store/store.js'
 import { PersistGate } from 'redux-persist/integration/react'
-import { HomePage, SignInPage, SignUpPage, PasswordResetPage, Movies, Theaters } from "./pages/index.js"
+import { HomePage, SignInPage, SignUpPage, PasswordResetPage, Theaters } from "./pages/index.js"
 import ThemeProvider from "./components/ThemeProvider.jsx"
 import OTPInput from './components/OTPInput.jsx'
 import ChangePassword from './components/ChangePassword.jsx'
-import DashBoard from "./components/DashBoard/Layout.jsx";
+import Movies from "./components/DashBoard/Movies.jsx";
+import Showtime from "./components/DashBoard/ShowTime.jsx";
 export default App;
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path='/' element={<App />}>
             <Route path='/' element={<HomePage />} />
-                <Route path='Dashboard' element={<DashBoard/>}/>
-                <Route path='Theaters' element={<Theaters/>}/>
+            <Route path='Dashboard' element={<Movies />} />
+            <Route path='Theaters' element={<Theaters />} />
+            <Route path='ShowTime' element={<Showtime />} />
             <Route path='signin' element={<SignInPage />} />
             <Route path='signup' element={<SignUpPage />} />
             <Route path='password-reset' element={<PasswordResetPage />} />

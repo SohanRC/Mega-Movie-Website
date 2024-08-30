@@ -3,7 +3,7 @@ import { config } from "dotenv"
 config();
 import cors from "cors"
 import { dbConnect } from "./config/dbConnect.js";
-import { AuthRoutes, MovieRoutes } from "./routes/routes.js";
+import { AuthRoutes, MovieRoutes,TheaterRoutes } from "./routes/routes.js";
 import { v2 as cloudinary } from "cloudinary"
 import cookieParser from "cookie-parser";
 
@@ -27,6 +27,7 @@ app.use(cookieParser());
 // routers
 app.use('/api/auth', AuthRoutes)
 app.use('/api/movies', MovieRoutes)
+app.use('/api/theater',TheaterRoutes)
 
 
 // start server
