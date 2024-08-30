@@ -4,11 +4,23 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const addNewMovie = async (req, res) => {
   try {
-    console.log(req.files);
-    console.log(req.body);
-    const { released, title, summary, genre, releaseDate, rating, trending, casts, crew, trailer} = req.body;
+    // console.log(req.file);
+    // console.log(req.body);
 
-    if (!released || !title || !summary || !genre || !releaseDate || !trailer) {
+    const {
+      released,
+      title,
+      summary,
+      genre,
+      releaseDate,
+      rating,
+      trending,
+      casts,
+      crew,
+      trailer,
+    } = req.body;
+
+    if (!released || !title || !summary) {
       return res.json(errorHandler(404, "All fields required"));
     }
 
@@ -23,7 +35,7 @@ const addNewMovie = async (req, res) => {
       );
     }
 
-    const featuredImageLocalPath = req.files?.featuredImage[0].path;
+    const featuredImageLocalPath = req.file.path;
 
     if (!featuredImageLocalPath) {
       return res.json(errorHandler(404, "featured Image for movie required"));
@@ -31,10 +43,35 @@ const addNewMovie = async (req, res) => {
 
     const featuredImageUrl = await uploadOnCloudinary(featuredImageLocalPath);
 
+    // let tempCasts = [];
+    // casts.map(curr => tempCasts.push)
+
+    const movie = await Movie.create({
+      released,
+      title,
+      summary,
+      genre,
+      featuredImage: featuredImageUrl.url,
+      trailer,
+      // clipsImage: req.files.clips ? clipsImageUrlArray : [],
+      duration: req.body.duration ? req.body.duration : "00:00",
+      releaseDate,
+      trending: trending ? trending : false,
+      rating,
+      casts,
+      crew,
+    });
+
+    if (!movie) {
+      throw err;
+    }
+    // return res.json({ message: "error while creating a new movie" });
+    return res.status(201).json({ messgae: "added successfully" });
+
+    // later add clips section
+    /* 
     let clipsLocalPath;
-
     let clipsImageUrlArray = [];
-
     const uploadClipsOnCLoudinary = async (clip) => {
       return new Promise(async (resolve, reject) => {
         try {
@@ -47,37 +84,16 @@ const addNewMovie = async (req, res) => {
         }
       });
     };
-
     async function add() {
-      await Promise.all(req.files.clips.map(clip => {
+      await Promise.all(req.files?.clips?.map(clip => {
         return uploadClipsOnCLoudinary(clip);
       }))
 
-      // promise.all([f1, f2,. f3])
-      const movie = await Movie.create({
-        released,
-        title,
-        summary,
-        genre,
-        featuredImage: featuredImageUrl.url,
-        trailer,
-        clipsImage: req.files.clips ? clipsImageUrlArray : [],
-        duration: req.body.duration ? req.body.duration : "00:00",
-        releaseDate,
-        trending:trending ? trending : false,
-        rating,
-        casts,
-        crew
-      });
+      promise.all([f1, f2,. f3])
       
-      if (!movie)
-        return res.json({ message: "error while creating a new movie" });
-
-      return res.status(201).json({ messgae: "added successfully" });
     }
-
-    add();
-
+    add(); 
+    */
   } catch (error) {
     console.log("error while creating movie");
     return res.status(404).json({ message: error.message });
@@ -97,6 +113,8 @@ const getAllMovie = async (req, res) => {
 const getMovie = async (req, res) => {
   try {
     const movieId = req.params.slug;
+    console.log("id: ",movieId);
+    
     if (!movieId) return null;
 
     const currMovie = await Movie.findById({ _id: movieId });

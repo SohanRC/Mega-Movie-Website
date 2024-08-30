@@ -7,6 +7,24 @@ import Theaters from "../components/DashBoard/Theaters";
 import ReservationPage from './reservation';
 import TicketBooking from "./ticketBook";
 
+import AllMovies from "./AllMovies.jsx";
+import Movie from "./Movie.jsx";
+import AddMovie from "./AddMovie.jsx";
+import AdminMovieDashboard from "./AdminDashboard/MovieDashboard.jsx"
 
-export { HomePage, SignInPage, SignUpPage, PasswordResetPage ,Movies,Theaters,ReservationPage,TicketBooking}
+export {
+  HomePage,
+  SignInPage,
+  SignUpPage,
+  PasswordResetPage,
+  Movies,
+  Theaters,
+  AllMovies,
+  Movie,
+  AddMovie,
+  AdminMovieDashboard,
+  ReservationPage,
+  TicketBooking
+  
+};
 
