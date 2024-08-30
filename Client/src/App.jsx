@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast"
 function App() {
 
   return (
-    <div className='overflow-hidden'>
+    <div className='h-screen w-screen overflow-scroll'>
       <Header />
       <Outlet />
       <Footer />
