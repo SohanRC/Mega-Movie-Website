@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from "react";
-import image from "../../assests/try.png";
 import { Link, useParams } from "react-router-dom";
-import { Cast, HorizontalCard, MovieCard } from "../index.js";
+import { MovieCard } from "../index.js";
 import { FaAngleRight } from "react-icons/fa6";
-import { useSelector } from "react-redux";
 import parse from "html-react-parser";
 import axios from "axios";
 
 function Movie() {
   const { id } = useParams();
-
-  const [movie, setMovie] = useState();
+  const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const findMovie = async () => {
-    const response = await axios.get(`/movies/single-movie/${id}`);
-    setMovie(response.data);
-    setLoading(false);
+    try {
+      const response = await axios.get(`/movies/single-movie/${id}`);
+      setMovie(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch movie data", error);
+    }
   };
 
   useEffect(() => {
@@ -24,86 +25,100 @@ function Movie() {
   }, []);
 
   return loading ? (
-    <h1>Loading...</h1>
+    <h1 className="text-center text-white text-3xl font-bold mt-20">Loading...</h1>
   ) : (
-    <div className="px-1">
-      <div className="relative">
-        <div className="hover:scale-105 duration-200 transition-all">
-          <div className="drop-shadow-lg">
+    <div className="px-4 lg:px-10 py-8 bg-neutral-900 text-white">
+      <div className="relative mb-8">
+        <div className="hover:scale-105 duration-300 transition-transform">
+          <div className="drop-shadow-2xl rounded-lg overflow-hidden">
             <img
               src={movie?.featuredImage}
               alt="Banner"
-              className="h-[500px] w-[100dvw] object-cover rounded-md"
+              className="h-[500px] w-full object-cover"
             />
           </div>
-          <div className="absolute top-0 w-full h-full bg-gradient-to-t from-neutral-950 to-transparent rounded-md"></div>
+          <div className="absolute top-0 w-full h-full bg-gradient-to-t from-neutral-950 to-transparent"></div>
         </div>
-        {/* details */}
 
-        <div className="container mx-auto ">
-          <div className=" w-full absolute bottom-0 max-w-md px-3">
-            <h2 className="font-bold text-2xl lg:text-4xl text-white drop-shadow-2xl ">
-              {/* title */}
-              {movie?.title}
-            </h2>
-            <p className="text-ellipsis line-clamp-3 my-2 text-white">
-              {/* summary */}
-              {parse(movie?.summary)}
-              {/* Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae
-              consectetur quia amet, ullam recusandae aliquid similique
-              consequatur excepturi ipsum quasi non odio sunt eius voluptatem
-              voluptatum repudiandae hic, culpa qui ipsa. Vel vero nisi iure
-              omnis dignissimos praesentium incidunt vitae, tempora mollitia
-              facilis, voluptas unde explicabo asperiores, alias fuga cumque! */}
-            </p>
-            <div className="flex items-center gap-4 text-white font-semibold">
-              <p>{movie?.rating || "8.7+"}</p>
-            </div>
-            <Link to="">
-              <button className=" bg-white px-4 py-2 text-black font-bold rounded mt-4  hover:bg-gradient-to-l from-red-700 to-orange-500 shadow-md transition-all hover:scale-105 mb-4">
-                Play Now
+        {/* Movie Details */}
+        <div className="container mx-auto absolute bottom-0 left-0 right-0 px-5 lg:px-20 py-6 bg-black/70 rounded-lg backdrop-blur-lg">
+          <h2 className="text-3xl lg:text-5xl font-extrabold">{movie?.title}</h2>
+          <p className="text-lg lg:text-xl mt-4 line-clamp-3">{parse(movie?.summary)}</p>
+          <div className="flex items-center gap-4 text-lg font-semibold mt-4">
+            <p>Rating: {movie?.rating || "N/A"}</p>
+            <p>Duration: {movie?.duration || "Unknown"}</p>
+            <p>Release Date: {movie?.releaseDate || "Not Released"}</p>
+          </div>
+          <div className="flex gap-2 mt-4">
+            {movie?.genre?.map((g, index) => (
+              <span key={index} className="px-3 py-1 bg-orange-600 rounded-full text-sm">
+                {g}
+              </span>
+            ))}
+          </div>
+          <div className="flex gap-4 mt-6">
+            <Link to={movie?.trailer || "#"} target="_blank">
+              <button className="bg-gradient-to-r from-red-600 to-orange-500 px-6 py-3 text-lg font-bold rounded-lg hover:opacity-90 transition-all">
+                Watch Trailer
+              </button>
+            </Link>
+            <Link to="/reservation">
+              <button className="bg-gradient-to-r from-blue-600 to-purple-500 px-6 py-3 text-lg font-bold rounded-lg hover:opacity-90 transition-all">
+                Book Now
               </button>
             </Link>
           </div>
         </div>
       </div>
 
-      <div className="lg:mt-5 lg:px-10">
-        {/* casts */}
-        <div>
-          <h1 className="text-3xl">Casts</h1>
-          <div className="w-[60dvw] border min-h-[200px]">
-            <HorizontalCard />
+      <div className="lg:mt-12 lg:px-12">
+        {/* Casts Section */}
+        <section className="mb-12">
+          <h1 className="text-3xl lg:text-4xl font-bold mb-6">Casts</h1>
+          <div className="w-full lg:w-[60vw] bg-neutral-800 p-4 rounded-lg">
+            <ul className="list-disc pl-5">
+              {movie?.casts?.map((cast, index) => (
+                <li key={index} className="text-lg font-medium mb-2">
+                  {cast}
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
+        </section>
 
-        <div className="w-[60dvw] border bg-black/20 h-[3px] mt-7 lg:ml-5"></div>
+        <div className="w-full lg:w-[60vw] border-t border-neutral-700 my-10"></div>
 
-        <div className="mt-5">
-          <h1 className="text-3xl">Crew</h1>
-          <div className="w-[60dvw] mt-4">
-            <HorizontalCard />
+        {/* Crew Section */}
+        <section className="mb-12">
+          <h1 className="text-3xl lg:text-4xl font-bold mb-6">Crew</h1>
+          <div className="w-full lg:w-[60vw] bg-neutral-800 p-4 rounded-lg">
+            <ul className="list-disc pl-5">
+              {movie?.crew?.map((crewMember, index) => (
+                <li key={index} className="text-lg font-medium mb-2">
+                  {crewMember}
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
+        </section>
 
-        <div className="w-[60dvw] border bg-black/20 h-[3px] mt-7 lg:ml-5"></div>
+        <div className="w-full lg:w-[60vw] border-t border-neutral-700 my-10"></div>
 
-        <div className="mt-5">
-          <div className="flex w-[60dvw] justify-between px-2">
-            <h1 className="text-3xl font-semibold">You might also like</h1>
-            <Link to="/movies/all-movies" className="text-xl text-orange-600">
-              <div className="flex items-center">
-                <h2 className="">View All</h2>
-                <span className="text-sm">
-                  <FaAngleRight />
-                </span>
-              </div>
+        {/* Recommended Movies Section */}
+        <section>
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-3xl lg:text-4xl font-semibold">You Might Also Like</h1>
+            <Link to="/movies/all-movies" className="text-xl text-orange-600 flex items-center">
+              <span>View All</span>
+              <FaAngleRight className="ml-2" />
             </Link>
           </div>
-          <div className="mt-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <MovieCard />
+            <MovieCard />
             <MovieCard />
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );

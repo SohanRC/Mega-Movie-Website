@@ -1,9 +1,10 @@
 import React from 'react'
-import { PostForm } from '../components/index.js'
+import { PostForm } from '../components/index'
 
 function AddMovie() {
     return (
         <div>
+
             <PostForm/>
         </div>
     )

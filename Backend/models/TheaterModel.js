@@ -30,6 +30,13 @@ const TheaterSchema = new Schema(
   },
    ShowTime: [
     {
+      movie:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Movie",
+      },
+      time:String,
+      price:Number,
+      date:String
         
     }
    ]

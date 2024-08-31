@@ -17,6 +17,16 @@ class TheaterService {
         }
     }
 
+    async getTheater() {
+        try {
+            return await axios.get('/theater/getTheater', {
+                withCredentials: true,
+            });
+        } catch (error) {
+            return [];
+        }
+    }
+
   
 }
 

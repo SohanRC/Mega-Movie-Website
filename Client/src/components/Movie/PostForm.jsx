@@ -1,21 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { useNavigation } from "react-router-dom";
-import { RTE, Input } from "../index.js";
-import { Select, MultiInput } from "../index.js";
 import axios from "axios";
-import parse from "html-react-parser";
+import { RTE, Input, Select, MultiInput } from "../index.js";
 
 function PostForm({ movie }) {
-  const dispatch = useDispatch();
-
   const [casts, setCasts] = useState([]);
   const [crew, setCrew] = useState([]);
   const [genre, setGenre] = useState([]);
-  // const [tempClips, setTempClips] = useState([]);
-
-  const { register, handleSubmit, setValue, getValues, control,reset } = useForm({
+  const { register, handleSubmit, setValue, getValues, control, reset } = useForm({
     defaultValues: {
       title: movie?.title || "",
       summary: movie?.content || "",
@@ -24,15 +16,14 @@ function PostForm({ movie }) {
       genre: movie?.genre || [],
       trailer: movie?.trailer || "",
       poster: movie?.poster || "",
-      // clips: movie?.clips || [],
       duration: movie?.duration || "",
       rating: movie?.rating || "",
       crew: movie?.crew || [],
       cast: movie?.cast || [],
     },
   });
+
   const submit = async (data) => {
-    // console.log(data);
     let tempCrew = [];
     let tempCasts = [];
     let tempGenre = [];
@@ -62,133 +53,106 @@ function PostForm({ movie }) {
     formData.append("featuredImage", data.poster[0]);
     formData.append("duration", data.duration ? data.duration : "");
     formData.append("releaseDate", data.releaseDate ? data.releaseDate : "");
-    formData.append("trending", data.trending == "true" ? true : false);
+    formData.append("trending", data.trending === "true" ? true : false);
     formData.append("rating", data.rating ? data.rating : "");
     formData.append("casts", tempCasts);
     formData.append("crew", tempCrew);
 
-    // console.log(tempCasts);
-    // console.log(tempCrew);
-    // console.log(tempGenre);
-
-    const response = await axios.post("/movies/add-movie", formData);
-    console.log(response);
-
-    if(response.message === 'added successfully'){
-      reset();
+    try {
+      const response = await axios.post("/movies/add-movie", formData);
+      if (response.data.message === 'added successfully') {
+        reset();
+      }
+    } catch (error) {
+      console.error("Error adding movie:", error);
     }
   };
-  // useEffect(() => {
-  //   console.log(genre);
-  //   console.log(crew);
-  //   console.log(casts);
-  // });
+
   return (
-    <div className="flex justify-center flex-col items-center">
-      <h1 className="text-3xl font-bold mt-5 underline underline-offset-4">
-        Add New Movie
-      </h1>
-      <div className="min-h-screen lg:w-[60dvw] sm:w-full flex justify-center items-center ">
+    <div className="flex justify-center items-center min-h-screen  py-10 px-5">
+      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-4xl">
+        <h1 className="text-3xl font-bold mb-6 text-center">Add New Movie</h1>
         <form
           onSubmit={handleSubmit(submit)}
-          className="flex flex-col gap-3 items-center mb-5"
+          className="flex flex-col gap-6"
           encType="multipart/form-data"
         >
-          {/* title */}
+          {/* Title */}
           <Input
-            className="mt-10 w-1/2"
-            label="Title: "
+            label="Title:"
             type="text"
             placeholder="Type your movie title"
-            title={movie?.title}
-            {...register("title", { required: true })}
+            {...register("title", { required: "Title is required" })}
           />
-          {/* summary */}
+
+          {/* Summary */}
           <RTE
-            label="Summary :"
+            label="Summary:"
             name="summary"
-            content={movie?.content}
+            content={getValues("summary")}
             control={control}
-            defaultValue={getValues("summary")}
-            {...register("summary", { required: true })}
+            {...register("summary", { required: "Summary is required" })}
           />
-          {/* trtailer link */}
+
+          {/* Trailer Link */}
           <Input
-            className="mt-10 w-1/2"
-            label="Trailer: "
+            label="Trailer:"
             type="text"
-            placeholder="Type your movie title"
-            title={movie?.trailer}
-            {...register("trailer", { required: true })}
-          />
-          {/* image */}
-          <Input
-            label="Poster: "
-            type="file"
-            file={movie?.featuredImage}
-            accept="image/png, image/jpg, image/jpeg, image/gif"
-            {...register("poster", { required: true })}
+            placeholder="Type your trailer link"
+            {...register("trailer", { required: "Trailer link is required" })}
           />
 
-          {/* clips
+          {/* Poster */}
           <Input
-            label="Clips: "
+            label="Poster:"
             type="file"
-            file={movie?.featuredImage}
             accept="image/png, image/jpg, image/jpeg, image/gif"
-            {...register("clips", { required: true })}
-            multiple
-          /> */}
+            {...register("poster", { required: "Poster is required" })}
+          />
 
-          <div className="flex w-full gap-5">
-            <Select
-              options={["true", "false"]}
-              label="Treding:"
-              // status={post?.status}
-              className="w-[40dvh]"
-              {...register("trending", { required: true })}
-            />
-            <Select
-              options={["true", "false"]}
-              label="Released:"
-              // status={post?.status}
-              className=" w-[40dvh]"
-              {...register("released", { required: true })}
-            />
-          </div>
-          <div className="w-full">
-            <MultiInput
-              team={genre}
-              setTeam={setGenre}
-              label="Genre"
-              placeholder="Add Genres"
-              // {...register("genre")}
-            />
-          </div>
+          {/* Trending */}
+          <Select
+            options={["true", "false"]}
+            label="Trending:"
+            className="w-full"
+            {...register("trending", { required: "Trending status is required" })}
+          />
 
-          <div className="w-full">
-            <MultiInput
-              team={casts}
-              setTeam={setCasts}
-              label="Casts"
-              placeholder="Add Casts"
-              // {...register("casts")}
-            />
-          </div>
+          {/* Released */}
+          <Select
+            options={["true", "false"]}
+            label="Released:"
+            className="w-full"
+            {...register("released", { required: "Release status is required" })}
+          />
 
-          <div className="w-full">
-            <MultiInput
-              team={crew}
-              setTeam={setCrew}
-              label="Crew"
-              placeholder="Add crew members"
-              // {...register("crew")}
-            />
-          </div>
+          {/* Genre */}
+          <MultiInput
+            team={genre}
+            setTeam={setGenre}
+            label="Genre"
+            placeholder="Add genres"
+          />
+
+          {/* Casts */}
+          <MultiInput
+            team={casts}
+            setTeam={setCasts}
+            label="Casts"
+            placeholder="Add casts"
+          />
+
+          {/* Crew */}
+          <MultiInput
+            team={crew}
+            setTeam={setCrew}
+            label="Crew"
+            placeholder="Add crew members"
+          />
 
           <button
             type="submit"
-            className="w-1/4 px-4 py-2 rounded-lg bg-blue-500 text-white font-semibold drop-shadow-lg shadow-lg"
+            className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
           >
             {movie ? "Update" : "Submit"}
           </button>

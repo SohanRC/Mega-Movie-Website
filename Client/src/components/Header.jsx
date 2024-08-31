@@ -16,10 +16,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import { setTheme } from "../store/ThemeSlice";
-import { login, logout } from "../store/UserSlice";
+import { logout } from "../store/UserSlice";
 
 const drawerWidth = 240;
 
@@ -28,7 +25,6 @@ function Header(props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
-  const theme = useSelector((state) => state.theme.theme);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -36,17 +32,17 @@ function Header(props) {
     {
       text: "Home",
       url: "/",
-      authStatus: null, // null for showing this tab irrespective of user login
+      authStatus: null,
     },
     {
       text: "Dashboard",
       url: "/Dashboard",
-      authStatus: null, // null for showing this tab irrespective of user login
+      authStatus: null,
     },
     {
       text: "SignIn",
       url: "/signin",
-      authStatus: !isAuthenticated, // show when user is not logged in
+      authStatus: !isAuthenticated,
     },
     {
       text: "SignUp",
@@ -59,10 +55,6 @@ function Header(props) {
     setMobileOpen((prevState) => !prevState);
   };
 
-  const handleThemeChange = () => {
-    dispatch(setTheme());
-  };
-
   const handleSignOut = () => {
     dispatch(logout());
     navigate("/signin");
@@ -70,16 +62,16 @@ function Header(props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
+      <Typography variant="h6" sx={{ my: 2, color: "#e0e0e0", fontWeight: "bold" }}>
         Movie Website
       </Typography>
-      <Divider />
+      <Divider sx={{ bgcolor: "#424242" }} />
       <List>
         {navItems.map((item) =>
           item.authStatus === null || item.authStatus ? (
-            <Link to={item.url} key={item.url}>
+            <Link to={item.url} key={item.url} style={{ textDecoration: 'none' }}>
               <ListItem disablePadding>
-                <ListItemButton sx={{ textAlign: "center" }}>
+                <ListItemButton sx={{ textAlign: "center", color: "#e0e0e0" }}>
                   <ListItemText primary={item.text} />
                 </ListItemButton>
               </ListItem>
@@ -94,27 +86,46 @@ function Header(props) {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: "flex", position: "sticky" }}>
+    <Box sx={{ display: "flex", position: "sticky", top: 0, zIndex: 1201 }}>
       <CssBaseline />
       <AppBar
         component="nav"
-        sx={{ bgcolor: "rgb(14,102,85)", flexWrap: "wrap" }}
+        sx={{
+          bgcolor: "#212121", // Dark gray background for AppBar
+          color: "#e0e0e0", // Light gray text color
+          boxShadow: "0 4px 6px rgba(0,0,0,0.3)",
+          borderBottom: "1px solid #424242",
+        }}
         position="fixed"
-        className="dark:bg-[rgb(33,47,61)] relative"
       >
         <Toolbar>
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1, display: { sm: "block" } }}
+            sx={{
+              flexGrow: 1,
+              fontWeight: "bold",
+              letterSpacing: 1.5,
+              display: { sm: "block" },
+            }}
           >
             Movie Website
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) =>
               item.authStatus === null || item.authStatus ? (
-                <Link to={item.url} key={item.url}>
-                  <Button sx={{ color: "#fff" }}>{item.text}</Button>
+                <Link to={item.url} key={item.url} style={{ textDecoration: 'none' }}>
+                  <Button
+                    sx={{
+                      color: "#e0e0e0",
+                      mx: 1,
+                      '&:hover': {
+                        bgcolor: "#424242", // Darker gray on hover
+                      }
+                    }}
+                  >
+                    {item.text}
+                  </Button>
                 </Link>
               ) : null
             )}
@@ -124,29 +135,24 @@ function Header(props) {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={{ ml: 2, display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
-
           {isAuthenticated && (
             <Button
               variant="contained"
-              className="bg-red-500 py-1 px-2"
+              color="error"
+              sx={{
+                ml: 2,
+                bgcolor: "#b71c1c",
+                '&:hover': { bgcolor: "#d32f2f" },
+              }}
               onClick={handleSignOut}
             >
-              Sign-Out
+              Sign Out
             </Button>
           )}
-
-          <IconButton
-            color="inherit"
-            edge="start"
-            sx={{ ml: 1 }}
-            onClick={handleThemeChange}
-          >
-            {theme === "light" ? <DarkModeIcon /> : <LightModeIcon />}
-          </IconButton>
         </Toolbar>
       </AppBar>
       <nav>
@@ -156,13 +162,15 @@ function Header(props) {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: "block", sm: "none" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
+              bgcolor: "#303030", // Darker gray for drawer
+              color: "#e0e0e0",
             },
           }}
         >
@@ -174,10 +182,6 @@ function Header(props) {
 }
 
 Header.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
   window: PropTypes.func,
 };
 
