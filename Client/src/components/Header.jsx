@@ -17,6 +17,8 @@ import Button from "@mui/material/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/UserSlice";
+import LocationFilter from "./Select/LocationFilter.jsx";
+
 
 const drawerWidth = 240;
 
@@ -62,14 +64,21 @@ function Header(props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2, color: "#e0e0e0", fontWeight: "bold" }}>
+      <Typography
+        variant="h6"
+        sx={{ my: 2, color: "#e0e0e0", fontWeight: "bold" }}
+      >
         Movie Website
       </Typography>
       <Divider sx={{ bgcolor: "#424242" }} />
       <List>
         {navItems.map((item) =>
           item.authStatus === null || item.authStatus ? (
-            <Link to={item.url} key={item.url} style={{ textDecoration: 'none' }}>
+            <Link
+              to={item.url}
+              key={item.url}
+              style={{ textDecoration: "none" }}
+            >
               <ListItem disablePadding>
                 <ListItemButton sx={{ textAlign: "center", color: "#e0e0e0" }}>
                   <ListItemText primary={item.text} />
@@ -111,17 +120,22 @@ function Header(props) {
           >
             Movie Website
           </Typography>
+          {isAuthenticated && <LocationFilter/>}
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) =>
               item.authStatus === null || item.authStatus ? (
-                <Link to={item.url} key={item.url} style={{ textDecoration: 'none' }}>
+                <Link
+                  to={item.url}
+                  key={item.url}
+                  style={{ textDecoration: "none" }}
+                >
                   <Button
                     sx={{
                       color: "#e0e0e0",
                       mx: 1,
-                      '&:hover': {
+                      "&:hover": {
                         bgcolor: "#424242", // Darker gray on hover
-                      }
+                      },
                     }}
                   >
                     {item.text}
@@ -146,7 +160,7 @@ function Header(props) {
               sx={{
                 ml: 2,
                 bgcolor: "#b71c1c",
-                '&:hover': { bgcolor: "#d32f2f" },
+                "&:hover": { bgcolor: "#d32f2f" },
               }}
               onClick={handleSignOut}
             >
