@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function MovieCard({ index, movie }) {
-  console.log(movie);
+  // console.log(movie);
   // console.log(movie._id);
 
   // const [id, setId] = useState()
