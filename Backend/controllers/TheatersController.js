@@ -18,3 +18,15 @@ export const addtheater = async (req, res) => {
         console.log(e);
     }
 }
+
+
+export const gettheaters = async (req, res) => {
+    try {
+        const theaters = await Theater.find();
+        console.log(theaters);
+        res.json(theaters);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+

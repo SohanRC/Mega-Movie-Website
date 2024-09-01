@@ -29,18 +29,18 @@ const ReservationPage = () => {
   };
 
   return (
-    <div className='h-full w-full overflow-hidden flex items-center justify-center'>
+    <div className="h-full w-full overflow-y-scroll flex items-center justify-center pt-96"> {/* Added padding-top */}
       <img
         src={MovieImage}
         className="absolute top-0 left-0 right-0 bottom-0 filter brightness-50 contrast-100 -z-10"
         alt="Movie Image"
       />
-      <div className='flex flex-col justify-center items-center'>
-        <p className='text-white text-3xl font-bold'>Avengers: Infinity War</p>
-        <p className='text-white'>
+      <div className="flex flex-col justify-center items-center">
+        <p className="text-white text-3xl font-bold">Avengers: Infinity War</p>
+        <p className="text-white text-center max-w-2xl mt-2">
           The Avengers must stop Thanos, an intergalactic warlord, from getting his hands on all the infinity stones. However, Thanos is prepared to go to any lengths to carry out his insane plan.
         </p>
-        <p className='text-white text-xl font-semibold m-4'>Select a Date and Time</p>
+        <p className="text-white text-xl font-semibold m-4">Select a Date and Time</p>
         <Swiper
           slidesPerView={6}
           spaceBetween={10}
@@ -64,7 +64,7 @@ const ReservationPage = () => {
           ))}
         </Swiper>
 
-        <p className='text-white text-xl font-semibold m-4'>Select a Theater</p>
+        <p className="text-white text-xl font-semibold m-4">Select a Theater</p>
         <Swiper
           slidesPerView={6}
           spaceBetween={10}

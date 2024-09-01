@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BestMovies, HomeBanner, MovieCard, Trending } from "./index.js";
+import { BestMovies, HomeBanner, Trending } from "./index.js";
 import { Link } from "react-router-dom";
 import { FaAngleRight } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,65 +10,56 @@ function Home() {
   const [movies, setMovies] = useState([]);
   const dispatch = useDispatch();
   const savedMovies = useSelector((state) => state.movieReducer.movies);
+
   const findAllMovies = async () => {
-    // if (savedMovies.length === 0) {
     const allMovies = await axios.get("/movies/all-movies");
-    // console.log(allMovies.data);
     dispatch(setMoviesMem(allMovies.data));
     setMovies(allMovies.data);
-    // }
-    // else {
-    //   setMovies(savedMovies);
-    // }
   };
+
   useEffect(() => {
     findAllMovies();
   }, []);
-  console.log(movies);
 
   return (
-    <div className=" py-5 min-h-[100dvh] px-3 ">
-      <HomeBanner className="h-[80dvh]" />
+    <div className="py-8 px-4 lg:px-12 bg-neutral-900 text-white min-h-screen">
+      <HomeBanner className="h-[70vh] rounded-lg overflow-hidden shadow-lg mb-12" />
 
-      {/* trending */}
-      <div className="mt-6">
-        <div className="flex w-[60dvw] justify-between px-2">
-          <h1 className="text-3xl font-semibold">Trending</h1>
-          <Link to="/movies/all-movies" className="text-xl text-orange-600">
+      {/* Trending Section */}
+      <div className="mt-8">
+        <div className="flex justify-between items-center w-full lg:w-[60vw] px-2">
+          <h1 className="text-4xl font-semibold">Trending</h1>
+          <Link to="/movies/all-movies" className="text-xl text-orange-500 hover:text-orange-600 transition-colors">
             <div className="flex items-center">
-              <h2 className="">View All</h2>
-              <span className="text-sm">
-                <FaAngleRight />
-              </span>
+              <h2 className="mr-1">View All</h2>
+              <FaAngleRight />
             </div>
           </Link>
         </div>
-        <div className="flex px-5 mt-3">
+        <div className="flex overflow-x-auto mt-4 gap-6 px-2 py-4">
           {movies?.map((movie) =>
             movie.trending === true ? (
-              <Trending key={movie?._id} movie={movie} />
+              <Trending key={movie._id} movie={movie} />
             ) : null
           )}
         </div>
       </div>
 
-      {/* bests */}
-      <div className="mt-6">
-        <div className="flex w-[60dvw] justify-between px-2">
-          <h1 className="text-3xl font-semibold">Best of Bests</h1>
-          <Link to="/movies/all-movies" className="text-xl text-orange-600">
+      {/* Best of Bests Section */}
+      <div className="mt-12">
+        <div className="flex justify-between items-center w-full lg:w-[60vw] px-2">
+          <h1 className="text-4xl font-semibold">Best of Bests</h1>
+          <Link to="/movies/all-movies" className="text-xl text-orange-500 hover:text-orange-600 transition-colors">
             <div className="flex items-center">
-              <h2 className="">View All</h2>
-              <span className="text-sm">
-                <FaAngleRight />
-              </span>
+              <h2 className="mr-1">View All</h2>
+              <FaAngleRight />
             </div>
           </Link>
         </div>
-        <div className="flex px-5 mt-3 gap-3">
-          {movies?.map((movie, index) =>
-            index < 3 ? <BestMovies key={movie._id} movie={movie} /> : null
-          )}
+        <div className="flex overflow-x-auto mt-4 gap-6 px-2 py-4">
+          {movies?.slice(0, 3).map((movie) => (
+            <BestMovies key={movie._id} movie={movie} />
+          ))}
         </div>
       </div>
     </div>

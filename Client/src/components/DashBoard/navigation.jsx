@@ -23,18 +23,5 @@ export const DASHBOARD_SIDEBAR_LINKS = [
 		path: '/showTime',
         icon:<SiShowtime />
 	},
-	{
-		key: 'Reservations',
-		label: 'Reservations',
-		path: '/income',
-        icon:<RiReservedFill />
-	},
-	{
-		key: 'Users',
-		label: 'Users',
-		path: '/promote',
-        icon:<FaUsers />
-
-	},
 	
 ]

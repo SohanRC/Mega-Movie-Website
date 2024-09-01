@@ -2,7 +2,7 @@ import axios from "axios"
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import firebaseApp from "../../config/firebaseConfig";
 
-axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL
+axios.defaults.baseURL = import.meta.env.VITE_AXIOS_BASE_URL
 
 
 class AuthService {

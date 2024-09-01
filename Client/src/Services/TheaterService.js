@@ -1,7 +1,7 @@
 import axios from "axios"
 
 
-axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL
+axios.defaults.baseURL = import.meta.env.VITE_AXIOS_BASE_URL
 
 
 class TheaterService {
@@ -14,6 +14,16 @@ class TheaterService {
             });
         } catch (error) {
             return error
+        }
+    }
+
+    async getTheater() {
+        try {
+            return await axios.get('/theater/getTheater', {
+                withCredentials: true,
+            });
+        } catch (error) {
+            return [];
         }
     }
 

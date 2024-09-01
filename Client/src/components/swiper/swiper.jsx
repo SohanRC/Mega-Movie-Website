@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -14,7 +14,6 @@ import parse from "html-react-parser";
 export default function SwiperComponent({ className = "" }) {
   const [movies, setMovies] = useState([]);
   const dispatch = useDispatch();
-  const savedMovies = useSelector((state) => state.movieReducer.movies);
 
   const findAllMovies = async () => {
     const allMovies = await axios.get("/movies/all-movies");
@@ -25,11 +24,11 @@ export default function SwiperComponent({ className = "" }) {
 
   useEffect(() => {
     findAllMovies();
-  }, [setMovies]);
+  }, []);
 
   return (
     <>
-      {movies.length && (
+      {movies.length > 0 && (
         <div>
           <Swiper
             slidesPerView={1}
@@ -41,56 +40,44 @@ export default function SwiperComponent({ className = "" }) {
             }}
             pagination={{
               clickable: true,
+              dynamicBullets: true,
             }}
             navigation={true}
             modules={[Pagination, Navigation, Autoplay]}
             className={`mySwiper ${className}`}
           >
-            {movies?.map((movie, index) => (
-              <div key={movie?._id}>
-                <SwiperSlide key={movie?._id} className={`w-full ${className}`}>
-                  <div className="h-full w-full relative">
-                    <div
-                      className="h-full w-full"
-                      style={{
-                        backgroundImage: `url(${movie.featuredImage})`,
-                        backgroundPosition: "center center",
-                        backgroundRepeat: "no-repeat",
-                        backgroundSize : "100% 100%",
-                      }}
-                    >
-                      {/* <img
-                        className="h-full"
-                        src={movie.featuredImage}
-                        alt="Poster"
-                      /> */}
-                    </div>
-                    <div className="absolute top-0 w-full h-full bg-gradient-to-t from-neutral-950 to-transparent rounded-md"></div>
+            {movies.map((movie) => (
+              <SwiperSlide key={movie?._id} className={`w-full ${className}`}>
+                <div className="h-full w-full relative">
+                  <div
+                    className="h-full w-full bg-cover bg-center"
+                    style={{
+                      backgroundImage: `url(${movie.featuredImage})`,
+                    }}
+                  />
+                  <div className="absolute top-0 w-full h-full bg-gradient-to-t from-black to-transparent rounded-md"></div>
 
-                    {/* details */}
-                    <div className="container mx-auto ">
-                      <div className=" w-full absolute bottom-0 max-w-md">
-                        <h2 className="font-bold text-2xl lg:text-2xl text-white drop-shadow-2xl text-left">
-                          {movie.title}
-                        </h2>
-                        <p className="text-ellipsis line-clamp-2 my-2 text-white text-lg text-left">
-                          {parse(movie.summary)}
-                        </p>
-                        <div className="flex items-center gap-4 text-white font-semibold">
-                          <p>{movie.rating ? movie.rating : "8.3+"}</p>
-                        </div>
-                        <div className="flex justify-start mt-3">
-                          <Link to="">
-                            <button className=" bg-white px-4 py-2 text-black font-bold rounded hover:bg-gradient-to-l from-red-700 to-orange-500 shadow-md transition-all hover:scale-105 mb-4">
-                              Play Now
-                            </button>
-                          </Link>
-                        </div>
-                      </div>
+                  {/* Movie Details */}
+                  <div className="absolute bottom-0 left-0 p-8 max-w-md bg-opacity-50 bg-black rounded-br-lg">
+                    <h2 className="font-bold text-4xl text-white shadow-md mb-4">
+                      {movie.title}
+                    </h2>
+                    <p className="text-white text-lg line-clamp-3 mb-4">
+                      {parse(movie.summary)}
+                    </p>
+                    <div className="flex items-center gap-4 text-white font-semibold mb-4">
+                      <p>{movie.rating ? movie.rating : "8.3+"}</p>
+                    </div>
+                    <div className="flex justify-start">
+                      <Link to="/reservation">
+                        <button className="bg-gradient-to-r from-[#3B1578] to-[#B6116B] text-white px-6 py-3 font-bold rounded-lg shadow-lg hover:from-[#B6116B] hover:to-[#3B1578] transition-all hover:scale-105">
+                          Book Now
+                        </button>
+                      </Link>
                     </div>
                   </div>
-                </SwiperSlide>
-              </div>
+                </div>
+              </SwiperSlide>
             ))}
           </Swiper>
         </div>
