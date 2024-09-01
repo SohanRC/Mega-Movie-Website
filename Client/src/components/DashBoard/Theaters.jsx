@@ -4,10 +4,10 @@ import Theaters from './Theaters-component';
 
 const Theater = () => {
   return (
-    <div className="flex flex-row h-screen w-screen">
-      <Sidebar />
+    <div className="flex flex-row h-full w-screen">
+      <Sidebar className='w-1/4 h-full' />
       {/* Adjusted padding to prevent overlap */}
-      <div className="flex-grow pt-20 pl-4 pr-4 overflow-y-auto">
+      <div className='flex-1 overflow-y-auto py-16'>
         <Theaters />
       </div>
     </div>

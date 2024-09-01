@@ -86,7 +86,7 @@ function Header(props) {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: "flex", position: "sticky", top: 0, zIndex: 1201 }}>
+    <Box sx={{ display: "flex", position: "fixed", top: 0, zIndex: 1201 }}>
       <CssBaseline />
       <AppBar
         component="nav"

@@ -29,7 +29,7 @@ export default function SwiperComponent({ className = "" }) {
   return (
     <>
       {movies.length > 0 && (
-        <div>
+        <div className="mt-16">
           <Swiper
             slidesPerView={1}
             spaceBetween={30}

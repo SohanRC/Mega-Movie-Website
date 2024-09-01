@@ -9,6 +9,12 @@ function Movie() {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [allMovies, setAllMovies] = useState([]);
+
+  const findAllMovies = async () => {
+    const allMovies = await axios.get("/movies/all-movies");
+    setAllMovies(allMovies.data);
+  };
 
   const findMovie = async () => {
     try {
@@ -21,13 +27,16 @@ function Movie() {
   };
 
   useEffect(() => {
+    findAllMovies();
     findMovie();
-  }, []);
+  }, [id]);
 
   return loading ? (
-    <h1 className="text-center text-white text-3xl font-bold mt-20">Loading...</h1>
+    <h1 className="text-center text-white text-3xl font-bold mt-20">
+      Loading...
+    </h1>
   ) : (
-    <div className="px-4 lg:px-10 py-8 bg-neutral-900 text-white">
+    <div className="px-4 lg:px-10 py-8 bg-neutral-900 text-white mt-16">
       <div className="relative mb-8">
         <div className="hover:scale-105 duration-300 transition-transform">
           <div className="drop-shadow-2xl rounded-lg overflow-hidden">
@@ -42,8 +51,12 @@ function Movie() {
 
         {/* Movie Details */}
         <div className="container mx-auto absolute bottom-0 left-0 right-0 px-5 lg:px-20 py-6 bg-black/70 rounded-lg backdrop-blur-lg">
-          <h2 className="text-3xl lg:text-5xl font-extrabold">{movie?.title}</h2>
-          <p className="text-lg lg:text-xl mt-4 line-clamp-3">{parse(movie?.summary)}</p>
+          <h2 className="text-3xl lg:text-5xl font-extrabold">
+            {movie?.title}
+          </h2>
+          <p className="text-lg lg:text-xl mt-4 line-clamp-3">
+            {parse(movie?.summary)}
+          </p>
           <div className="flex items-center gap-4 text-lg font-semibold mt-4">
             <p>Rating: {movie?.rating || "N/A"}</p>
             <p>Duration: {movie?.duration || "Unknown"}</p>
@@ -51,7 +64,10 @@ function Movie() {
           </div>
           <div className="flex gap-2 mt-4">
             {movie?.genre?.map((g, index) => (
-              <span key={index} className="px-3 py-1 bg-orange-600 rounded-full text-sm">
+              <span
+                key={index}
+                className="px-3 py-1 bg-orange-600 rounded-full text-sm"
+              >
                 {g}
               </span>
             ))}
@@ -107,16 +123,21 @@ function Movie() {
         {/* Recommended Movies Section */}
         <section>
           <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl lg:text-4xl font-semibold">You Might Also Like</h1>
-            <Link to="/movies/all-movies" className="text-xl text-orange-600 flex items-center">
+            <h1 className="text-3xl lg:text-4xl font-semibold">
+              You Might Also Like
+            </h1>
+            <Link
+              to="/movies/all-movies"
+              className="text-xl text-orange-600 flex items-center"
+            >
               <span>View All</span>
               <FaAngleRight className="ml-2" />
             </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <MovieCard />
-            <MovieCard />
-            <MovieCard />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1">
+            {allMovies?.slice(0, 3).map((movie, index) => (
+              <MovieCard key={movie._id} movie={movie} index={index} />
+            ))}
           </div>
         </section>
       </div>

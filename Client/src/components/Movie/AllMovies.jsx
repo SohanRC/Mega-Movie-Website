@@ -35,14 +35,14 @@ function AllMovies() {
             <div>
               <h2 className="text-xl font-semibold mb-2">Genre</h2>
               <Select
-                className="w-full bg-neutral-700 text-white rounded-lg outline-none p-3"
+                className="w-full bg-neutral-700  rounded-lg outline-none p-3"
                 options={genres}
               />
             </div>
             <div>
               <h2 className="text-xl font-semibold mb-2">Format</h2>
               <Select
-                className="w-full bg-neutral-700 text-white rounded-lg outline-none p-3"
+                className="w-full bg-neutral-700  rounded-lg outline-none p-3"
                 options={["2D", "3D"]}
               />
             </div>

@@ -14,8 +14,7 @@ const ShowTimes = () => {
 
   return (
     <div className='flex flex-row h-screen w-screen' >
-      <Sidebar /> {theaters.length>0&&<ShowTime data={theaters}/>}
-
+      <Sidebar className='flex-1 overflow-y-auto p-6 py-16' /> {theaters.length>0&&<ShowTime data={theaters}/>}
     </div>
   )
 }
