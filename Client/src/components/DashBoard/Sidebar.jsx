@@ -38,7 +38,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`bg-gray-900 flex flex-col text-white ${open ? "w-60" : "w-0"} ${open ? "p-3" : "p-0"} duration-300 relative`}
+      className={`bg-gray-900 flex flex-col text-white ${open ? "w-60" : "w-0"} ${open ? "p-3" : "p-0"} duration-300`}
       style={{ marginTop: "64px" }}  // Adjust this margin to prevent overlapping with the header
     >
       <BsArrowRightCircle
