@@ -6,6 +6,7 @@ import { FaFilter } from "react-icons/fa";
 function AllMovies() {
   const savedMovies = useSelector((state) => state.movieReducer.movies);
   const city = useSelector((state) => state.locationReducer.City);
+  const [genre, setGenre] = useState("All")
 
   const genres = [
     "All",
@@ -54,14 +55,14 @@ function AllMovies() {
           <h1 className="text-3xl font-bold mb-8">
             Movies Available in{" "}
             <span className="text-red-400 underline underline-offset-4">
-              {city.name}
+              {city}
             </span>
           </h1>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {savedMovies.length > 0 ? (
-              savedMovies.map((movie) => (
-                <MovieCard key={movie._id} movie={movie} />
+              savedMovies.map((movie,index) => (
+                <MovieCard key={index} movie={movie} />
               ))
             ) : (
               <p className="col-span-full text-center text-lg text-red-400">
